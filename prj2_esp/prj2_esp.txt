@@ -1,0 +1,49 @@
+#define BLYNK_TEMPLATE_ID "TMPL6Fvnr3Jaz"
+#define BLYNK_TEMPLATE_NAME "Smart Lock"
+#define BLYNK_AUTH_TOKEN "rS5AXw7qmmntJ433aBuVcbHB0fPyO4BW"
+
+
+#include <SoftwareSerial.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+// Khai báo các chân RX và TX cho espsoftwareserial
+#define RX_PIN 16 // D2
+#define TX_PIN 17 // D1
+
+SoftwareSerial mySerial(RX_PIN, TX_PIN);
+
+
+
+int button ;
+char auth[] = BLYNK_AUTH_TOKEN;
+char ssid[] = "TP-Link_9BF4";
+char pass[] = "90717215";
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  mySerial.begin(9600) ; 
+   Blynk.begin(auth, ssid, pass);
+}
+
+BLYNK_WRITE(V0) {
+  button = param.asInt();
+  if(button == 1) {
+     mySerial.println("OPEN DOOR") ;
+    Serial.println("1") ;
+    delay(4000) ;
+    Blynk.virtualWrite(V0,0) ;
+  } 
+  //else {
+ //   mySerial.println("CLOSE DOOR") ; 
+ //   Serial.println("0") ;
+ // }
+}
+
+
+void loop() {
+     Blynk.run();  
+
+}
